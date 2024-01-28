@@ -2,6 +2,7 @@
 package lab2;
 
 import java.util.Scanner;
+import java.util.ArrayList;
 public class a5 {
     public static void main(String[] args){
         System.out.print("Enter the total.no : ");
@@ -13,6 +14,7 @@ public class a5 {
             arr[i]=s.nextInt();
         }
         int a,b;
+        ArrayList<Integer> ar = new ArrayList<>();
         for(int i=0;i<n;i++){
             a=0;
             for (int j=0;j<n;j++){
@@ -20,8 +22,12 @@ public class a5 {
                     a++;
                 }
             }
-            System.out.println("Occurence of " + arr[i] + " = " + a);
+            if(ar.contains(arr[i])){
 
+            }else{
+                System.out.println("Occurence of " + arr[i] + " = " + a);
+            }
+            ar.add(arr[i]);
         }
     }
 }
