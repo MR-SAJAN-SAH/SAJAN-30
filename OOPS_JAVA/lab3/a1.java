@@ -27,8 +27,6 @@ class demo{
     float b=sc.nextFloat();
     float h=sc.nextFloat();
     box b1=new box(l,b,h);
-
-
 }
 
 public class a1 {

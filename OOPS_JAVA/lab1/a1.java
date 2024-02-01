@@ -16,6 +16,8 @@ class a1{
         System.out.print("Enter your branch : ");
         branch =sc.nextLine();
 
+        System.out.println("Name : "+name+"\nRoll : "+roll+"\nSection : "+sec+"\nBranch : "+branch);
+
 
     }
 }
