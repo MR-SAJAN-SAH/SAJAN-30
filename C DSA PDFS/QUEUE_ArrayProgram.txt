@@ -1,0 +1,96 @@
+/******************************************************************************
+
+                            Online C Compiler.
+                Code, Compile, Run and Debug C program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+// Online C compiler to run C program online
+#include <stdio.h>
+#define MAX 50
+int QUEUE[MAX];
+int front=-1,rear=-1;
+void insert(int);
+void deleting();
+void display(int);
+int main()
+{
+    int ch1, num;
+    char ch='y';
+    while(ch=='y'||ch=='Y')
+    {
+        printf("\n 1:Insert");
+        printf("\n 2:Delete");
+        printf("\n 1:Display");
+        printf(" Enter your Choice(1,2,3):");
+        scanf("%d", &ch1);
+        switch(ch1)
+        {
+            case 1:
+                printf("\n Enter a Number ");
+                scanf("%d", &num);
+                insert(num);
+                break;
+            case 2:
+                deleting();
+                break;
+            case 3:
+                display(front);
+                break;
+            default:
+                printf(" Invalid Choice");
+        }
+        printf(" Do you want to Continue (y/n):");
+        scanf("%c",&ch);
+    }
+    return 0;
+}
+void insert(int num)
+{
+    if(rear==MAX-1)
+    {
+        printf("Queue isoverflow");
+        return;
+    }
+    else
+    {
+        if(front==-1)
+        {
+             front=rear=0;
+        }
+        else
+        {
+             rear=rear+1;
+            QUEUE[rear]=num;
+        }
+    }
+}
+void deleting()
+{
+    int item;
+    if(front==-1)
+    {
+        printf("\n Queue is Empty");
+        return;
+    }
+    item=QUEUE[front];
+    if(front==rear)
+    {
+        front=rear=-1;
+    }
+    else
+    {
+        front=front+1;
+        printf("%d Number is deleted ", item);
+    }
+    void display(int m)
+    {
+        int i;
+        printf("\n \t  Queue content the following elements");
+        for(i=m;i<=rear;i++)
+        {
+            printf("%d \t",QUEUE[i]);
+        }
+    }
+}

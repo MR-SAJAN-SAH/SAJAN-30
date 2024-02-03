@@ -1,0 +1,99 @@
+#include<stdio.h>
+#include<malloc.h>
+#include<stdlib.h>
+struct stack
+{
+	int info;
+	struct stack * next;
+};
+typedef struct stack 	stack;
+//Prototype Declaration
+stack* push (stack*);
+stack* pop(stack*);
+void display(stack*);
+void main()
+{
+	int flag=1, choice;
+	stack *top=NULL;
+	while(flag==1)
+	{
+	        printf("Press 1 to push node \n");
+	        printf("Press 2 to for pop  \n");
+	         printf("Press 3 to for display  \n");
+	        printf("Enter your Choice:");
+	        scanf("%d", &choice);
+	        switch(choice)
+	       {
+		    case 1: 
+		        top= push(top);
+		        break;
+		    case 2: 
+		        top=pop(top);
+	    	    break;
+    		case 3:
+                display(top);
+                break;
+            default:
+	            printf(“Wrong Choice”);
+	            break;
+        }
+	}
+}
+stack* push(stack* top)
+{
+    stack* newnode;
+    int newinfo;
+    printf("Enterthe new information to be push on stacktop\n");
+    scanf("%d",&newinfo);
+    newnode=(stack*)malloc(sizeof(stack));
+    newnode->info=newinfo;
+    if (top == NULL) 
+    {
+        top=newnode;
+        top->next=NULL;
+    } 
+    else
+    { 
+        newnode->next=top;
+        top=newnode;
+    } 
+    return(top);
+}
+stack* pop(stack* top)
+{
+    int item; 
+    stack *temp; 
+    if( top == NULL) 
+    {
+        printf(" Empty Stack …"); 
+        return(NULL) ; 
+    }
+    else
+    { 
+        temp=top;
+        top=top->next; 
+        temp->next=NULL; 
+        free(temp); 
+    }
+    
+    return(top); 
+}
+void display(stack *top) 
+{
+    stack *temp;
+    temp = top;
+    if(top == NULL) 
+    {
+       printf("Empty stack …");
+       exit(0);
+    }
+    else 
+    {
+        printf("Top->");
+        while(temp != NULL) 
+        {
+            printf("%d ->", temp->info);
+            temp = temp->next;
+        }
+    }
+}

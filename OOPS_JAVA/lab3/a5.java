@@ -13,9 +13,7 @@ class circle{
     public void area(){
         System.out.println("The area of circle is : "+this.radius*2*3.14 +" unit.");
     }
-
 }
-
 class triangle{
     private float height;
     private float breadth;
