@@ -6,5 +6,37 @@
 
 package lab5;
 
+import java.util.Scanner;
+
+abstract class Student{
+    int roll;
+    int reg;
+    public void getInput()
+    {
+        Scanner sc=new Scanner(System.in);
+        System.out.print("Enter roll numnber: ");
+        this.roll=sc.nextInt();
+        System.out.print("Enter registration number: ");
+        this.reg=sc.nextInt();
+
+    }
+    abstract void course();
+}
+
+class Kiitian extends Student{
+    void course(){
+        System.out.println("Your course is B.Tech");
+    }
+    void detail(){
+        System.out.println(this.roll+" is your roll number.");
+        System.out.println(this.reg+" is your registration number.");
+    }
+}
 public class a1 {
+    public static void main(String[] args){
+        Kiitian obj=new Kiitian();
+        obj.getInput();
+        obj.course();
+        obj.detail();
+    }
 }

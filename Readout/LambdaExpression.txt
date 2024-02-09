@@ -1,0 +1,51 @@
+Labbda Expresssion
+-------------------
+1.) It is used to define anonymous or Nameless Methods.
+2.) Lambda Expressions are defined with the help of Interfaces.
+3.) By default, All the Methods of Interface are public and abstract.
+4.) If a interface have a single abstract method then it is known as  
+    Functional Interface. And annotation used is @FunctionalInterface.
+
+5.) we can create an anonymous class like:-
+	@FunctionInterface
+	interface MyLambda{
+		public void display();
+	}
+	
+	public class LamdaDemo{
+	    public static void main(String[] args)
+	    MyLambda m=new MyLambda(){
+	    public void display(){
+	    sout("H");
+	    	}
+        };
+        m.display();
+	}
+}
+
+Now the lambda expression can be written as,
+        MyLambda m=()->{
+        	    sout("H");
+                };
+
+        it is an anonymous method above one was anonymous class.
+
+
+6.) It will take argument as mentioned in method of interface.
+7.) we dont need to return ,it will do automatically as per return type.
+            MyLambda m=(a,b)->a+b;
+
+8.) if there is a single statement, braces is not mandatory.
+9.)  we can use only final variable which are local to the method out of anonymous method or it should be not changing after that anonymous method or should be in that method only.
+10.) and can't modify variable out of it's context.
+11.) But we can treat as normal for instance variables.
+
+12.) LambdaExpression can be passed as a parameter .
+
+
+
+Method Reference
+-----------------
+
+
+

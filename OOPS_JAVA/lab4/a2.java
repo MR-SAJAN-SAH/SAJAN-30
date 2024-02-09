@@ -22,17 +22,21 @@ class box2 extends plate{
     }
 }
 
-class woodBox extends box2{
+class woodBox extends box2 {
     int thick;
-    public woodBox(int l, int b,int w,int t){
-        super(l,b,w);
-    this.thick=t;
+
+    public woodBox(int l, int b, int w, int t) {
+        super(l, b, w);
+        this.thick = t;
     }
 
-
-public class a2 {
-    public static void main(String[] args){
-        woodBox w=new woodBox(1,2,3,4);
-        w.display();
+    void display() {
+        System.out.println(this.height + " is height\n" + this.length + " is length\n" + this.width + " is width\n" + this.thick + " is thickness");
     }
 }
+    public class a2 {
+        public static void main(String[] args) {
+            woodBox w = new woodBox(1, 2, 3, 4);
+            w.display();
+        }
+    }

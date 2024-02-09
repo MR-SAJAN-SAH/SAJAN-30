@@ -1,0 +1,18 @@
+Labbda Expresssion
+-------------------
+1.) It is used to define anonymous or Nameless Methods.
+2.) Lambda Expressions are defined with the help of Interfaces.
+3.) By default, All the Methods of Interface are public and abstract.
+4.) If a interface have a single abstract method then it is known as  
+    Functional Interface. And annotation used is @FunctionalInterface.
+
+5.) we can create an anonymous class like:-
+	@FunctionInterface
+	interface MyLambda{
+		public void display();
+	}
+	
+	public class LamdaDemo{
+ 
+
+
