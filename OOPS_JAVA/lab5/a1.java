@@ -5,7 +5,6 @@
   details of a kiitian object.*/
 
 package lab5;
-
 import java.util.Scanner;
 
 abstract class Student{
@@ -28,8 +27,8 @@ class Kiitian extends Student{
         System.out.println("Your course is B.Tech");
     }
     void detail(){
-        System.out.println(this.roll+" is your roll number.");
-        System.out.println(this.reg+" is your registration number.");
+        System.out.println(super.roll+" is your roll number.");
+        System.out.println(super.reg+" is your registration number.");
     }
 }
 public class a1 {

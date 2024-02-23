@@ -4,7 +4,7 @@ class is created with user entered dimensions and volume is printed.*/
 
 package lab3;
 import java.util.Scanner;
-class box{
+ class box{
     float length;
     float breadth;
     float height;

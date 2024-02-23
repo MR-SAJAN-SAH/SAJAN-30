@@ -25,7 +25,7 @@ class box extends sheet {
         this.height = height;
     }
     double price() {
-        return super.price() + length * width * height * 60;
+        return super.price() + this.length * this.width * this.height * 60;
     }
 }
 

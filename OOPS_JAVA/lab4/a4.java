@@ -36,8 +36,8 @@ class Person extends Account{
     public void disp(){
         System.out.println("Your name is "+this.name);
         System.out.println("Your aadhar number is "+this.aahar_no);
-        System.out.println(this.acc_no+" is your account number.");
-        System.out.println(this.balance+" is your balance available.\n");
+        System.out.println(super.acc_no+" is your account number.");
+        System.out.println(super.balance+" is your balance available.\n");
 
     }
 }

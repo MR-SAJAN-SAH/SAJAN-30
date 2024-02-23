@@ -31,7 +31,7 @@ class woodBox extends box2 {
     }
 
     void display() {
-        System.out.println(this.height + " is height\n" + this.length + " is length\n" + this.width + " is width\n" + this.thick + " is thickness");
+        System.out.println(super.height + " is height\n" + super.length + " is length\n" + super.width + " is width\n" + this.thick + " is thickness");
     }
 }
     public class a2 {
