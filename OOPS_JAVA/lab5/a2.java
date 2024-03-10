@@ -13,7 +13,7 @@ interface Motor{
 }
 
 class Washing_Machine implements Motor{
-    @Override
+    @Override  
     public void run(){
         System.out.println("You ran 200 min.");
     }

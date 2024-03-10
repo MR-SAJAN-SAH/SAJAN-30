@@ -1,0 +1,212 @@
+package com.example.sharelove;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
+
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.google.zxing.BarcodeFormat;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+public class Details extends AppCompatActivity {
+
+    Button upload;
+    private static final int PICK_VIDEO_REQUEST = 1;
+    private Uri videoUri;
+    private StorageReference storageReference;
+    ProgressBar progressBar;
+    ImageView imageView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_details);
+        Button shareButton = findViewById(R.id.button2);
+        shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareScreen();
+            }
+        });
+
+        public void shareScreen() {
+            // Capture the root view
+            View rootView = getWindow().getDecorView().getRootView();
+            rootView.setDrawingCacheEnabled(true);
+            Bitmap bitmap = Bitmap.createBitmap(rootView.getDrawingCache());
+            rootView.setDrawingCacheEnabled(false);
+
+            // Execute compression in AsyncTask
+            new ImageCompressionTask().execute(bitmap);
+        }
+
+         class ImageCompressionTask extends AsyncTask<Bitmap, Void, Uri> {
+            @Override
+            protected Uri doInBackground(Bitmap... bitmaps) {
+                Bitmap bitmap = bitmaps[0];
+                try {
+                    File imagePath = new File(getExternalCacheDir(), "screenshot.jpg");
+                    FileOutputStream fos = new FileOutputStream(imagePath);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                    fos.flush();
+                    fos.close();
+                    return Uri.fromFile(imagePath);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(Uri uri) {
+                if (uri != null) {
+                    // Share the JPEG image
+                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                    shareIntent.setType("image/jpeg");
+                    shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+                    startActivity(Intent.createChooser(shareIntent, "Share Image"));
+                } else {
+                    Toast.makeText(Details.this, "Failed to share screenshot", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+
+
+
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle("Details");
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
+
+        upload = findViewById(R.id.upload);
+        imageView = findViewById(R.id.imageView);
+
+        // Get the intent that started this activity
+        Intent intent = getIntent();
+        if (intent != null) {
+            // Retrieve the names and date from the intent extras
+            String groomName = intent.getStringExtra("groomName");
+            String brideName = intent.getStringExtra("brideName");
+            String date = intent.getStringExtra("date");
+
+            // Display the names and date in TextViews
+            TextView groomNameTextView = findViewById(R.id.textView2);
+            TextView brideNameTextView = findViewById(R.id.textView3);
+            TextView dateTextView = findViewById(R.id.textView4);
+
+            groomNameTextView.setText(groomName);
+            brideNameTextView.setText(brideName);
+            dateTextView.setText("Date of Wedding: " + date);
+        }
+
+        storageReference = FirebaseStorage.getInstance().getReference();
+
+        upload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openGallery();
+            }
+        });
+    }
+
+
+    private void openGallery() {
+        Intent galleryIntent = new Intent();
+        galleryIntent.setType("video/*");
+        galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(galleryIntent, "Select Video"), PICK_VIDEO_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_VIDEO_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            videoUri = data.getData();
+            uploadVideoToFirebase();
+        }
+    }
+
+    private void uploadVideoToFirebase() {
+        progressBar.setVisibility(View.VISIBLE);
+        StorageReference videoRef = storageReference.child("videos/" + System.currentTimeMillis() + ".mp4");
+
+        videoRef.putFile(videoUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // Video uploaded successfully, now get the download URL
+                        progressBar.setVisibility(View.INVISIBLE);
+                        videoRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                // Download URL retrieved, generate QR code
+                                String downloadUrl = uri.toString();
+                                generateQRCodeFromUrl(downloadUrl);
+                                Toast.makeText(Details.this, "Video uploaded successfully!", Toast.LENGTH_SHORT).show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                progressBar.setVisibility(View.INVISIBLE);
+                                Toast.makeText(Details.this, "Failed to retrieve download URL: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(Details.this, "Failed to upload video: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void generateQRCodeFromUrl(String downloadUrl) {
+        BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+        try {
+            Bitmap bitmap = barcodeEncoder.encodeBitmap(downloadUrl, BarcodeFormat.QR_CODE, 400, 400);
+            imageView.setImageBitmap(bitmap);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Failed to generate QR code: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            onBackPressed(); // Go back when the back button is clicked
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+}

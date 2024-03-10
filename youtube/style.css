@@ -1,0 +1,43 @@
+*{
+    margin: 0;
+    font-family: Arial;
+
+}
+
+.nav-bar{
+    margin-top: 10;
+    background-color: white;
+    height: 75px;
+    display: flex;
+    align-items: center;
+    
+}
+
+.nav-logo{
+    
+    align-items: center;
+    height: 60px;
+    width: 80px;
+}
+
+.logo{
+    
+    background-image: url("youtube.png");
+    background-size: cover;
+    height: 60px;
+    width: 100%;
+    margin-left: 8%;
+}
+.p1{
+    color: black;
+    margin-top: 2%;
+    text-decoration: wavy;
+
+}
+.icon1{
+    background-image: url("i1.png");
+    background-size: cover;
+    height: 60px;
+    width: 50px;
+
+}
