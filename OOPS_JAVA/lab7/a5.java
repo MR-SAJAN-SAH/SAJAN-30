@@ -22,7 +22,7 @@ public class a5 {
         } catch (CheckArgumentException e) {
             System.out.println(e.getMessage());
         } catch (NumberFormatException e) {
-            System.out.println("Invalid input: Please provide valid integers.");
+            System.out.println("Invalid input");
         }
     }
 }

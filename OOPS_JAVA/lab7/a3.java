@@ -30,11 +30,7 @@ public class a3{
             System.out.println("Error: " + e.getMessage());
         }
 
-        try {
-            processor.processInput(10);
-        } catch (NegativeNumberException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+
     }
 }
 

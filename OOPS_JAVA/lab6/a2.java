@@ -53,7 +53,6 @@ public class a2 {
             System.out.println("String 1 is not a palindrome.");
         }
 
-        // viii) Check the number of word, vowel and consonant in the string
         int wordCount = countWords(str1);
         int vowelCount = countVowels(str1);
         int consonantCount = countConsonants(str1);

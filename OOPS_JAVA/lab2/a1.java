@@ -1,4 +1,4 @@
-//Find the largest among 3 user entered no. using Java
+//Find the largest among 3 user entered no. using Java by sajan kumar sah
 
 package lab2;
 
